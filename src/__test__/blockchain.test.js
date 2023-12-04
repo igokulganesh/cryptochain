@@ -3,9 +3,16 @@ import Block from "../block";
 
 describe("BlockChain()", () => {
   let blockchain;
+  let errorMock, logMock;
 
   beforeEach(() => {
     blockchain = new BlockChain();
+
+    errorMock = jest.fn();
+    logMock = jest.fn();
+
+    global.console.log = logMock;
+    global.console.error = errorMock;
   });
 
   it("contains a `chain` Array instance", () => {
