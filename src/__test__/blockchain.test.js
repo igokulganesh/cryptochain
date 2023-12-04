@@ -2,7 +2,11 @@ import BlockChain from "../blockchain";
 import Block from "../block";
 
 describe("BlockChain()", () => {
-  const blockchain = new BlockChain();
+  let blockchain;
+
+  beforeEach(() => {
+    blockchain = new BlockChain();
+  });
 
   it("contains a `chain` Array instance", () => {
     expect(blockchain.chain instanceof Array).toBe(true);
@@ -17,5 +21,43 @@ describe("BlockChain()", () => {
     blockchain.addBlock({ data });
 
     expect(blockchain.getLastBlock().data).toEqual(data);
+  });
+
+  describe("isValidChain()", () => {
+    describe("when the chain does not start with genesis block", () => {
+      it("returns false", () => {
+        blockchain.chain[0].data = "fake-genesis";
+
+        expect(BlockChain.isValidChain(blockchain.chain)).toBe(false);
+      });
+    });
+
+    describe("when the chain starts with genesis block and has multiple blocks", () => {
+      beforeEach(() => {
+        blockchain.addBlock({ data: "Block 1 data" });
+        blockchain.addBlock({ data: "Block 2 data" });
+        blockchain.addBlock({ data: "Block 3 data" });
+      });
+
+      describe("and the lastHash reference has Changed", () => {
+        it("returns false", () => {
+          blockchain.getLastBlock().lastHash = "broken-Hash";
+          expect(BlockChain.isValidChain(blockchain.chain)).toBe(false);
+        });
+      });
+
+      describe("and the chain contains a block with an invalid field", () => {
+        it("returns false", () => {
+          blockchain.getLastBlock().data = "Changed-data";
+          expect(BlockChain.isValidChain(blockchain.chain)).toBe(false);
+        });
+      });
+
+      describe("and chains is valid", () => {
+        it("returns true", () => {
+          expect(BlockChain.isValidChain(blockchain.chain)).toBe(true);
+        });
+      });
+    });
   });
 });
