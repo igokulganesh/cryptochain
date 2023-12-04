@@ -1,4 +1,5 @@
 import { GENESIS_DATA } from "./config";
+import { cryptoHash } from "./cryptoHash";
 
 class Block {
   constructor({ data, timestamp, lastHash, hash }) {
@@ -9,7 +10,11 @@ class Block {
   }
 
   static mineBlock({ lastBlock, data }) {
-    return new this({ data, timestamp: Date.now(), lastHash: lastBlock.hash });
+    const timestamp = Date.now();
+    const lastHash = lastBlock.hash;
+    const hash = cryptoHash(data, timestamp, lastHash);
+
+    return new this({ data, timestamp, lastHash, hash });
   }
 
   static genesis() {
