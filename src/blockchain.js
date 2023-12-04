@@ -14,6 +14,21 @@ export default class BlockChain {
     this.chain.push(newBlock);
   }
 
+  replaceChain(chain) {
+    if (chain.length < this.chain.length) {
+      console.error("The Incoming chain must be longer");
+      return;
+    }
+
+    if (!BlockChain.isValidChain(chain)) {
+      console.error("The incoming chain must be valid");
+      return;
+    }
+
+    console.log("\nReplacing Chain with: \n", chain);
+    this.chain = chain;
+  }
+
   getLastBlock() {
     return this.chain[this.chain.length - 1];
   }

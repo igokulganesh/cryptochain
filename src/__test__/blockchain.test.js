@@ -60,4 +60,45 @@ describe("BlockChain()", () => {
       });
     });
   });
+
+  describe("replaceChain()", () => {
+    let newChain, originalChain;
+
+    beforeEach(() => {
+      newChain = new BlockChain();
+      originalChain = blockchain.chain;
+    });
+
+    describe("when the new chain is not longer", () => {
+      it("does not replace the chain", () => {
+        blockchain.replaceChain(newChain.chain);
+
+        expect(blockchain.chain).toEqual(originalChain);
+      });
+    });
+
+    describe("when the new chain is longer", () => {
+      beforeEach(() => {
+        newChain.addBlock({ data: "one" });
+        newChain.addBlock({ data: "two" });
+        newChain.addBlock({ data: "three" });
+        newChain.addBlock({ data: "four" });
+      });
+
+      describe("and when the chain is inValid", () => {
+        it("does not replace the chain", () => {
+          newChain.getLastBlock().lastHash = "some-fake-hash";
+          blockchain.replaceChain(newChain.chain);
+          expect(blockchain.chain).toBe(originalChain);
+        });
+      });
+
+      describe("and when the chain is valid", () => {
+        it("replaces the chain", () => {
+          blockchain.replaceChain(newChain.chain);
+          expect(blockchain.chain).toBe(newChain.chain);
+        });
+      });
+    });
+  });
 });
