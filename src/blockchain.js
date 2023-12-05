@@ -1,5 +1,6 @@
 import Block from "./block.js";
 import { cryptoHash } from "./cryptoHash.js";
+import hexToBinary from "hex-to-binary";
 
 export default class BlockChain {
   constructor() {
@@ -41,8 +42,17 @@ export default class BlockChain {
       const { data, timestamp, lastHash, hash, nonce, difficulty } = chain[i];
 
       const actualLastHash = chain[i - 1].hash;
+      const lastDifficulty = chain[i - 1].difficulty;
 
+      // Check LastHash set Properly
       if (lastHash !== actualLastHash) return false;
+
+      // Check difficulty changes by 1 only
+      if (Math.abs(lastDifficulty - difficulty) > 1) return false;
+
+      // Check each block contains leading 0 with difficulty
+      if (hexToBinary(hash).substring(0, difficulty) !== "0".repeat(difficulty))
+        return false;
 
       const validatedHash = cryptoHash(
         timestamp,
@@ -52,6 +62,7 @@ export default class BlockChain {
         nonce
       );
 
+      // Check each block has valid hash
       if (hash !== validatedHash) return false;
     }
 
