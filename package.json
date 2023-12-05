@@ -6,8 +6,9 @@
   "type": "module",
   "scripts": {
     "start": "node src\\index.js",
-    "dev": "nodemon src\\index.js",
-    "test": "jest --watchAll"
+    "dev": "npm run start-redis && nodemon src\\index.js",
+    "test": "jest --watchAll",
+    "start-redis": "start redis-server"
   },
   "author": "",
   "license": "ISC",
@@ -25,6 +26,7 @@
   "dependencies": {
     "body-parser": "^1.20.2",
     "express": "^4.18.2",
-    "hex-to-binary": "^1.0.1"
+    "hex-to-binary": "^1.0.1",
+    "redis": "^4.6.11"
   }
 }
