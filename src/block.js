@@ -13,24 +13,28 @@ class Block {
 
   static mineBlock({ lastBlock, data }) {
     const lastHash = lastBlock.hash;
-    const difficulty = lastBlock.difficulty;
-    let hash;
+    let hash, difficulty, timestamp;
     let nonce = 0;
-    let timestamp = Date.now();
 
     do {
       nonce++;
       timestamp = Date.now();
+      difficulty = Block.adjustDifficulty({
+        lastBlock,
+        timestamp,
+      });
       hash = cryptoHash(data, lastHash, difficulty, nonce, timestamp);
     } while (hash.substring(0, difficulty) !== "0".repeat(difficulty));
 
     return new this({ data, timestamp, lastHash, hash, nonce, difficulty });
   }
 
-  static adjustDifficulty({ originalBlock, timestamp }) {
-    const { difficulty } = originalBlock;
+  static adjustDifficulty({ lastBlock, timestamp }) {
+    const { difficulty } = lastBlock;
 
-    if (timestamp - originalBlock.timestamp > MINE_RATE) return difficulty - 1;
+    if (difficulty < 1) return 1;
+
+    if (timestamp - lastBlock.timestamp > MINE_RATE) return difficulty - 1;
 
     return difficulty + 1;
   }
