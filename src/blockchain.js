@@ -1,5 +1,5 @@
-import Block from "./block";
-import { cryptoHash } from "./cryptoHash";
+import Block from "./block.js";
+import { cryptoHash } from "./cryptoHash.js";
 
 export default class BlockChain {
   constructor() {

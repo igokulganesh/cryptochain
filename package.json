@@ -18,5 +18,8 @@
     "transform": {
       "^.+\\.[t|j]sx?$": "babel-jest"
     }
+  },
+  "dependencies": {
+    "hex-to-binary": "^1.0.1"
   }
 }
