@@ -38,13 +38,19 @@ export default class BlockChain {
       return false;
 
     for (let i = 1; i < chain.length; i++) {
-      const { data, timestamp, lastHash, hash } = chain[i];
+      const { data, timestamp, lastHash, hash, nonce, difficulty } = chain[i];
 
       const actualLastHash = chain[i - 1].hash;
 
       if (lastHash !== actualLastHash) return false;
 
-      const validatedHash = cryptoHash(timestamp, data, lastHash);
+      const validatedHash = cryptoHash(
+        timestamp,
+        data,
+        lastHash,
+        difficulty,
+        nonce
+      );
 
       if (hash !== validatedHash) return false;
     }
