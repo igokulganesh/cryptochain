@@ -9,18 +9,18 @@ const ROOT_NODE_ADDRESS = `http://localhost:${DEFUALT_PORT}`;
 
 const blockchain = new Blockchain();
 const pubsub = new PubSub({ blockchain });
-pubsub.initilize().then(() => {
-  pubsub.broadcastChain();
-});
+await pubsub.initilize();
 
 const app = express();
 app.use(bodyParser.json());
 
 app.get("/api/blocks", (_req, res) => {
+  console.log("GET: /api/block");
   res.json(blockchain.chain);
 });
 
 app.post("/api/mine", (req, res) => {
+  console.log("POST: /api/mine", req.body);
   const { data } = req.body;
   blockchain.addBlock({ data });
   pubsub.broadcastChain();
@@ -34,7 +34,7 @@ const syncChains = () => {
     (error, response, body) => {
       if (!error && response.statusCode === 200) {
         const rootChain = JSON.parse(body);
-        console.log("Updating chain on sync with root chain", rootChain);
+        console.log("Updating chain on sync with root chain...");
         blockchain.replaceChain(rootChain);
       }
     }
@@ -49,5 +49,5 @@ if (process.env.GENERATE_PEER_PORT === "true") {
 const PORT = PEER_PORT || DEFUALT_PORT;
 app.listen(PORT, () => {
   console.log(`App Started\nListening at localhost:${PORT}`);
-  syncChains();
+  if (PORT !== DEFUALT_PORT) syncChains();
 });

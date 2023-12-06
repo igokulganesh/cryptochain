@@ -24,8 +24,14 @@ class PubSub {
     );
   }
 
-  publish({ channel, message }) {
-    this.publisher.publish(channel, message);
+  async publish({ channel, message }) {
+    /* 
+      Unsubscribe to the channel before publishing message 
+      to avoid sending to own network and the resubscribe to it 
+    */
+    await this.subscriber.unsubscribe(channel);
+    await this.publisher.publish(channel, message);
+    await this.subscriber.subscribe(channel);
   }
 
   handleMessage(message, channel) {
@@ -35,8 +41,8 @@ class PubSub {
     }
   }
 
-  broadcastChain() {
-    this.publish({
+  async broadcastChain() {
+    await this.publish({
       channel: CHANNELS.BLOCKCHAIN,
       message: JSON.stringify(this.blockchain.chain),
     });
