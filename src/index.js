@@ -1,9 +1,14 @@
 import express from "express";
 import bodyParser from "body-parser";
 import Blockchain from "./blockchain.js";
+import PubSub from "./pubsub.js";
 
 const app = express();
 const blockchain = new Blockchain();
+const pubsub = new PubSub({ blockchain });
+pubsub.initilize().then(() => {
+  pubsub.broadcastChain();
+});
 
 app.use(bodyParser.json());
 

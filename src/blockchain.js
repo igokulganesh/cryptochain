@@ -16,7 +16,7 @@ export default class BlockChain {
   }
 
   replaceChain(chain) {
-    if (chain.length < this.chain.length) {
+    if (chain.length <= this.chain.length) {
       console.error("The Incoming chain must be longer");
       return;
     }
