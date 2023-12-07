@@ -1,8 +1,8 @@
-import express, { response } from "express";
+import express from "express";
 import bodyParser from "body-parser";
 import request from "request";
-import Blockchain from "./blockchain.js";
-import PubSub from "./pubsub.js";
+import Blockchain from "./blockchain/index.js";
+import PubSub from "./app/pubsub.js";
 
 const DEFUALT_PORT = 3000;
 const ROOT_NODE_ADDRESS = `http://localhost:${DEFUALT_PORT}`;
