@@ -23,10 +23,12 @@
   "jest": {
     "transform": {
       "^.+\\.[t|j]sx?$": "babel-jest"
-    }
+    },
+    "testEnvironment": "node"
   },
   "dependencies": {
     "body-parser": "^1.20.2",
+    "elliptic": "^6.5.4",
     "express": "^4.18.2",
     "hex-to-binary": "^1.0.1",
     "redis": "^4.6.11",
