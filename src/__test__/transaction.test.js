@@ -1,4 +1,4 @@
-import { verifySignature } from "../utils/elliptic";
+import { verifySignature } from "../utils";
 import Wallet from "../wallet";
 import Transaction from "../wallet/transaction";
 

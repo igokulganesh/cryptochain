@@ -1,6 +1,5 @@
 import { INITIAL_BALANCE } from "../config";
-import { elliptic } from "../utils/elliptic";
-import { cryptoHash } from "../utils/cryptoHash";
+import { elliptic, cryptoHash } from "../utils";
 
 export default class Wallet {
   constructor() {

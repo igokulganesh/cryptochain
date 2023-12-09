@@ -1,5 +1,5 @@
 import Block from "./block.js";
-import { cryptoHash } from "../utils/cryptoHash.js";
+import { cryptoHash } from "../utils";
 import hexToBinary from "hex-to-binary";
 
 export default class BlockChain {

@@ -1,6 +1,6 @@
 import Block from "../blockchain/block";
 import { GENESIS_DATA, MINE_RATE } from "../config";
-import { cryptoHash } from "../utils/cryptoHash";
+import { cryptoHash } from "../utils";
 import hexToBinary from "hex-to-binary";
 
 describe("Block", () => {
