@@ -1,4 +1,5 @@
 import { v4 as uuidv4 } from "uuid";
+import { verifySignature } from "../utils";
 
 export default class Transaction {
   constructor({ senderWallet, amount, recipient }) {
@@ -23,5 +24,28 @@ export default class Transaction {
       address: senderWallet.publicKey,
       signature: senderWallet.sign(this.outputMap),
     };
+  }
+
+  static validateTransaction(transaction) {
+    const {
+      outputMap,
+      input: { address, amount, signature },
+    } = transaction;
+
+    const outputTotal = Object.values(outputMap).reduce(
+      (total, outputAmount) => total + outputAmount
+    );
+
+    if (amount !== outputTotal) {
+      console.error(`Invalid transaction from ${address}`);
+      return false;
+    }
+
+    if (!verifySignature({ data: outputMap, publicKey: address, signature })) {
+      console.error(`Invalid signature from ${address}`);
+      return false;
+    }
+
+    return true;
   }
 }
