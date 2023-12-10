@@ -9,6 +9,7 @@
     "dev": "npm run start-redis && nodemon src\\index.js",
     "dev-peer": "cross-env GENERATE_PEER_PORT='true' nodemon src\\index.js",
     "test": "jest --watchAll",
+    "test:detect": "jest --detectOpenHandles",
     "start-redis": "start redis-server"
   },
   "author": "",

@@ -26,15 +26,22 @@ export default class Transaction {
     };
   }
 
+  update({ senderWallet, amount, recipient }) {
+    if (senderWallet.balance < amount)
+      throw new Error("Not enough balance in SenderWallet");
+
+    this.outputMap[senderWallet.publicKey] -= amount;
+    this.outputMap[recipient] = amount;
+    this.input = this.createInput({ senderWallet });
+  }
+
   static validateTransaction(transaction) {
     const {
       outputMap,
       input: { address, amount, signature },
     } = transaction;
 
-    const outputTotal = Object.values(outputMap).reduce(
-      (total, outputAmount) => total + outputAmount
-    );
+    const outputTotal = this.calculateOutputTotal(outputMap);
 
     if (amount !== outputTotal) {
       console.error(`Invalid transaction from ${address}`);
@@ -47,5 +54,11 @@ export default class Transaction {
     }
 
     return true;
+  }
+
+  static calculateOutputTotal(outputMap) {
+    return Object.values(outputMap).reduce(
+      (total, outputAmount) => total + outputAmount
+    );
   }
 }

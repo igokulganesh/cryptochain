@@ -3,7 +3,7 @@ import { cryptoHash } from "../utils";
 describe("cryptoHash()", () => {
   it("generate a SHA-256 Hashed output", () => {
     expect(cryptoHash("gokul")).toEqual(
-      "2ce6db3d86b23e69ce4e4c892ffbe5121a0fedb7ccbb6317df15e9362cada4ba"
+      "b19d2c27ce7f3b5b25ae0bffc6b70a32e439585df28589c13cb0a5e59a0a7684"
     );
   });
 
@@ -11,5 +11,13 @@ describe("cryptoHash()", () => {
     expect(cryptoHash("one", "two", "three")).toEqual(
       cryptoHash("three", "two", "one")
     );
+  });
+
+  it("produces a unique hash when the properties have changed on a input", () => {
+    const obj = {};
+    const originalHash = cryptoHash(obj);
+    obj["data"] = "abc";
+
+    expect(cryptoHash(obj)).not.toEqual(originalHash);
   });
 });
