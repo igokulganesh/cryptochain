@@ -14,4 +14,8 @@ export default class TransactionPool {
       (transaction) => transaction.input.address === address
     );
   }
+
+  setMap(transactionMap) {
+    this.transactionMap = transactionMap;
+  }
 }

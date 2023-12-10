@@ -1,4 +1,4 @@
-import express from "express";
+import express, { response } from "express";
 import bodyParser from "body-parser";
 import request from "request";
 import Blockchain from "./blockchain/index.js";
@@ -64,7 +64,7 @@ app.get("/api/transaction-pool-map", (req, res) => {
   res.json(transactionPool.transactionMap);
 });
 
-const syncChains = () => {
+const syncWithRootState = () => {
   request(
     { url: `${ROOT_NODE_ADDRESS}/api/blocks` },
     (error, response, body) => {
@@ -72,6 +72,17 @@ const syncChains = () => {
         const rootChain = JSON.parse(body);
         console.log("Updating chain on sync with root chain...");
         blockchain.replaceChain(rootChain);
+      }
+    }
+  );
+
+  request(
+    { url: `${ROOT_NODE_ADDRESS}/api/transaction-pool-map` },
+    (error, response, body) => {
+      if (!error && response.statusCode === 200) {
+        const rootTransactionPoolMap = JSON.parse(body);
+        console.log("Updating Transaction Pool Map with root...");
+        transactionPool.setMap(rootTransactionPoolMap);
       }
     }
   );
@@ -85,5 +96,5 @@ if (process.env.GENERATE_PEER_PORT === "true") {
 const PORT = PEER_PORT || DEFUALT_PORT;
 app.listen(PORT, () => {
   console.log(`App Started\nListening at localhost:${PORT}`);
-  if (PORT !== DEFUALT_PORT) syncChains();
+  if (PORT !== DEFUALT_PORT) syncWithRootState();
 });
