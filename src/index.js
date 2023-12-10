@@ -57,22 +57,10 @@ app.post("/api/transact", (req, res) => {
   } catch (error) {
     res.status(400).json({ type: "error", message: error.message });
   }
+});
 
-  /*   try {
-    if (transaction) {
-      transaction.update({ senderwallet: wallet, recipient, amount });
-    } else {
-      transaction = wallet.createTransaction({ recipient, amount });
-    }
-
-    transactionPool.setTransaction(transaction);
-
-    console.log(transactionPool);
-
-    res.json(transaction);
-  } catch (error) {
-    res.status(400).json({ type: "error", message: error.message });
-  } */
+app.get("/api/transaction-pool-map", (req, res) => {
+  res.json(transactionPool.transactionMap);
 });
 
 const syncChains = () => {
