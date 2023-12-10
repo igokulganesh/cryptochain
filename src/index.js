@@ -37,12 +37,42 @@ app.post("/api/transact", (req, res) => {
   console.log("POST: /api/transact");
 
   const { recipient, amount } = req.body;
-  const transaction = wallet.createTransaction({ recipient, amount });
-  transactionPool.setTransaction(transaction);
 
-  console.log(transactionPool);
+  let transaction = transactionPool.getExistingTransaction({
+    address: wallet.publicKey,
+  });
 
-  res.json(transaction);
+  try {
+    if (transaction) {
+      transaction.update({ senderWallet: wallet, recipient, amount });
+    } else {
+      transaction = wallet.createTransaction({ recipient, amount });
+    }
+
+    transactionPool.setTransaction(transaction);
+
+    console.log(transactionPool);
+
+    res.json(transaction);
+  } catch (error) {
+    res.status(400).json({ type: "error", message: error.message });
+  }
+
+  /*   try {
+    if (transaction) {
+      transaction.update({ senderwallet: wallet, recipient, amount });
+    } else {
+      transaction = wallet.createTransaction({ recipient, amount });
+    }
+
+    transactionPool.setTransaction(transaction);
+
+    console.log(transactionPool);
+
+    res.json(transaction);
+  } catch (error) {
+    res.status(400).json({ type: "error", message: error.message });
+  } */
 });
 
 const syncChains = () => {

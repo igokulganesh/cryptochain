@@ -3,12 +3,13 @@ import Transaction from "../wallet/transaction";
 import Wallet from "../wallet";
 
 describe("TransactionPool", () => {
-  let transaction, transactionPool;
+  let transaction, transactionPool, senderWallet;
 
   beforeEach(() => {
+    senderWallet = new Wallet();
     transactionPool = new TransactionPool();
     transaction = new Transaction({
-      senderWallet: new Wallet(),
+      senderWallet: senderWallet,
       recipient: "dummy",
       amount: 100,
     });
@@ -23,5 +24,14 @@ describe("TransactionPool", () => {
     });
   });
 
-  describe("", () => {});
+  describe("getExistingTransaction()", () => {
+    it("returns the exisiting transaction given an input address", () => {
+      transactionPool.setTransaction(transaction);
+      const exisiting = transactionPool.getExistingTransaction({
+        address: senderWallet.publicKey,
+      });
+
+      expect(exisiting).toBe(transaction);
+    });
+  });
 });
