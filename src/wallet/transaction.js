@@ -30,8 +30,10 @@ export default class Transaction {
     if (senderWallet.balance < amount)
       throw new Error("Not enough balance in SenderWallet");
 
+    if (!this.outputMap[recipient]) this.outputMap[recipient] = amount;
+    else this.outputMap[recipient] += amount;
+
     this.outputMap[senderWallet.publicKey] -= amount;
-    this.outputMap[recipient] = amount;
     this.input = this.createInput({ senderWallet });
   }
 
