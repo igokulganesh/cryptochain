@@ -1,11 +1,11 @@
-import { INITIAL_BALANCE } from "../config";
-import { elliptic, cryptoHash } from "../utils";
-import Transaction from "./transaction";
+import { INITIAL_BALANCE } from "../config.js";
+import { EC, cryptoHash } from "../utils/index.js";
+import Transaction from "./transaction.js";
 
 export default class Wallet {
   constructor() {
     this.balance = INITIAL_BALANCE;
-    this.keyPair = elliptic.genKeyPair();
+    this.keyPair = EC.genKeyPair();
     this.publicKey = this.keyPair.getPublic().encode("hex");
   }
 
