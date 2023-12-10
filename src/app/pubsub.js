@@ -3,11 +3,13 @@ import { createClient } from "redis";
 const CHANNELS = {
   TEST: "TEST",
   BLOCKCHAIN: "BLOCKCHAIN",
+  TRANSACTION: "TRANSACTION",
 };
 
 class PubSub {
-  constructor({ blockchain }) {
+  constructor({ blockchain, transactionPool }) {
     this.blockchain = blockchain;
+    this.transactionPool = transactionPool;
   }
 
   async initilize() {
@@ -19,9 +21,15 @@ class PubSub {
       .on("error", (err) => console.log("Redis Subscriber Client Error", err))
       .connect();
 
-    this.subscriber.subscribe(CHANNELS.BLOCKCHAIN, (message, channel) =>
-      this.handleMessage(message, channel)
-    );
+    this.subcribeToChannels();
+  }
+
+  subcribeToChannels() {
+    Object.values(CHANNELS).forEach((channel) => {
+      this.subscriber.subscribe(channel, (message, channel) =>
+        this.handleMessage(message, channel)
+      );
+    });
   }
 
   async publish({ channel, message }) {
@@ -35,9 +43,20 @@ class PubSub {
   }
 
   handleMessage(message, channel) {
-    if (channel === CHANNELS.BLOCKCHAIN) {
-      const parsedMessage = JSON.parse(message);
-      this.blockchain.replaceChain(parsedMessage);
+    console.log(`Channel:${channel}, Message: ${message}`);
+    const parsedMessage = JSON.parse(message);
+
+    switch (channel) {
+      case CHANNELS.BLOCKCHAIN:
+        this.blockchain.replaceChain(parsedMessage);
+        break;
+
+      case CHANNELS.TRANSACTION:
+        this.transactionPool.setTransaction(parsedMessage);
+        break;
+
+      default:
+        return;
     }
   }
 
@@ -45,6 +64,13 @@ class PubSub {
     await this.publish({
       channel: CHANNELS.BLOCKCHAIN,
       message: JSON.stringify(this.blockchain.chain),
+    });
+  }
+
+  async broadcastTransaction(transaction) {
+    await this.publish({
+      channel: CHANNELS.TRANSACTION,
+      message: JSON.stringify(transaction),
     });
   }
 }
