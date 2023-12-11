@@ -1,10 +1,13 @@
+import Transaction from "./transaction";
+
 export default class TransactionPool {
   constructor() {
     this.transactionMap = {};
   }
 
   setTransaction(transaction) {
-    this.transactionMap[transaction.id] = transaction;
+    if (Transaction.validateTransaction(transaction))
+      this.transactionMap[transaction.id] = transaction;
   }
 
   getExistingTransaction({ address }) {
@@ -17,5 +20,11 @@ export default class TransactionPool {
 
   setMap(transactionMap) {
     this.transactionMap = transactionMap;
+  }
+
+  getValidTransactions() {
+    return Object.values(this.transactionMap).filter((transaction) =>
+      Transaction.validateTransaction(transaction)
+    );
   }
 }
