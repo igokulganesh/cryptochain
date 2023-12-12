@@ -11,3 +11,7 @@ export const GENESIS_DATA = {
   nonce: 0,
   difficulty: INITIAL_DIFFICULTY,
 };
+
+export const REWARD_INPUT = { address: "*authorized-reward*" };
+
+export const MINING_REWARD = 50;
