@@ -5,6 +5,7 @@ import Blockchain from "./blockchain/index.js";
 import PubSub from "./app/pubsub.js";
 import TransactionPool from "./wallet/transaction-pool.js";
 import Wallet from "./wallet/index.js";
+import TransactionMiner from "./app/transaction-miner.js";
 
 const DEFUALT_PORT = 3000;
 const ROOT_NODE_ADDRESS = `http://localhost:${DEFUALT_PORT}`;
@@ -15,6 +16,13 @@ const wallet = new Wallet();
 
 const pubsub = new PubSub({ blockchain, transactionPool });
 await pubsub.initilize();
+
+const transactionMiner = new TransactionMiner({
+  blockchain,
+  transactionPool,
+  wallet,
+  pubsub,
+});
 
 const app = express();
 app.use(bodyParser.json());
@@ -62,6 +70,12 @@ app.post("/api/transact", (req, res) => {
 
 app.get("/api/transaction-pool-map", (req, res) => {
   res.json(transactionPool.transactionMap);
+});
+
+app.get("/api/mine-transactions", (req, res) => {
+  transactionMiner.mineTransaction();
+
+  res.redirect("/api/blocks");
 });
 
 const syncWithRootState = () => {
