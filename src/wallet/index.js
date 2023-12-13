@@ -18,4 +18,22 @@ export default class Wallet {
 
     return new Transaction({ senderWallet: this, amount, recipient });
   }
+
+  static calculateBalance({ chain, address }) {
+    let outputsTotal = 0;
+
+    for (let i = 1; i < chain.length; i++) {
+      const block = chain[i];
+
+      for (let transaction of block.data) {
+        const output = transaction.outputMap[address];
+
+        if (output) {
+          outputsTotal += output;
+        }
+      }
+    }
+
+    return INITIAL_BALANCE + outputsTotal;
+  }
 }
