@@ -28,19 +28,24 @@ export default class Wallet {
 
   static calculateBalance({ chain, address }) {
     let outputsTotal = 0;
+    let hasMadeTransaction = false;
 
-    for (let i = 1; i < chain.length; i++) {
+    for (let i = chain.length - 1; i > 0; i--) {
       const block = chain[i];
 
       for (let transaction of block.data) {
+        if (transaction.input.address === address) hasMadeTransaction = true;
+
         const output = transaction.outputMap[address];
 
         if (output) {
           outputsTotal += output;
         }
       }
+
+      if (hasMadeTransaction) break;
     }
 
-    return INITIAL_BALANCE + outputsTotal;
+    return hasMadeTransaction ? outputsTotal : INITIAL_BALANCE + outputsTotal;
   }
 }

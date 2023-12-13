@@ -140,6 +140,70 @@ describe("Wallet()", () => {
 
         expect(balance).toEqual(actualBalance);
       });
+
+      describe("and the wallet has made a transaction", () => {
+        let recentTransaction;
+
+        beforeEach(() => {
+          recentTransaction = wallet.createTransaction({
+            amount: 50,
+            recipient: "random",
+          });
+          blockchain.addBlock({ data: [recentTransaction] });
+        });
+
+        it("returns the output amount of the recent transaction", () => {
+          const balance = Wallet.calculateBalance({
+            chain: blockchain.chain,
+            address: wallet.publicKey,
+          });
+
+          expect(balance).toEqual(
+            recentTransaction.outputMap[wallet.publicKey]
+          );
+        });
+
+        describe("and there are outputs next to and after the recent transaction", () => {
+          let sameBlockTransaction, nextBlockTransaction;
+
+          beforeEach(() => {
+            recentTransaction = wallet.createTransaction({
+              recipient: "new-address",
+              amount: 10,
+            });
+
+            sameBlockTransaction = Transaction.rewardTransaction({
+              minerWallet: wallet,
+            });
+
+            blockchain.addBlock({
+              data: [recentTransaction, sameBlockTransaction],
+            });
+
+            nextBlockTransaction = new Wallet().createTransaction({
+              recipient: wallet.publicKey,
+              amount: 75,
+            });
+
+            blockchain.addBlock({
+              data: [nextBlockTransaction],
+            });
+          });
+
+          it("includes the output amounts in the returned balance", () => {
+            const balance = Wallet.calculateBalance({
+              chain: blockchain.chain,
+              address: wallet.publicKey,
+            });
+            const actualBalance =
+              recentTransaction.outputMap[wallet.publicKey] +
+              sameBlockTransaction.outputMap[wallet.publicKey] +
+              nextBlockTransaction.outputMap[wallet.publicKey];
+
+            expect(balance).toEqual(actualBalance);
+          });
+        });
+      });
     });
   });
 });
