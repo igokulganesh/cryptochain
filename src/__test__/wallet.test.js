@@ -73,9 +73,28 @@ describe("Wallet()", () => {
         expect(transaction.outputMap[recipient]).toEqual(amount);
       });
     });
+
+    describe("and a chain is passed", () => {
+      it("calls Wallet.CalculateBalance method", () => {
+        const calculateBalanceMock = jest.fn();
+
+        const originalMethod = Wallet.calculateBalance;
+        Wallet.calculateBalance = calculateBalanceMock;
+
+        wallet.createTransaction({
+          recipient: "some",
+          amount: 50,
+          chain: new BlockChain().chain,
+        });
+
+        expect(calculateBalanceMock).toHaveBeenCalled();
+
+        Wallet.calculateBalance = originalMethod;
+      });
+    });
   });
 
-  describe("createTransaction()", () => {
+  describe("calculateBalance()", () => {
     let blockchain;
 
     beforeEach(() => {
