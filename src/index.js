@@ -33,7 +33,7 @@ const app = express();
 
 app.use(bodyParser.json());
 
-app.use(express.static(path.join(__dirname, "client")));
+app.use(express.static(path.join(__dirname, "client/dist")));
 
 app.get("/api/blocks", (_req, res) => {
   console.log("GET: /api/block");
@@ -100,7 +100,7 @@ app.get("/api/wallet-info", (req, res) => {
 });
 
 app.get("/", (req, res) => {
-  res.sendFile("index.html", { root: path.join(__dirname, "client") });
+  res.sendFile("index.html", { root: path.join(__dirname, "client", "dist") });
 });
 
 const syncWithRootState = () => {

@@ -6,11 +6,14 @@
   "type": "module",
   "scripts": {
     "start": "node src\\index.js",
-    "dev": "npm run start-redis && nodemon src\\index.js",
+    "dev": "npm run dev-client & npm run start-redis & nodemon src\\index.js",
     "dev-peer": "cross-env GENERATE_PEER_PORT='true' nodemon src\\index.js",
     "test": "jest --watchAll",
     "test:detect": "jest --detectOpenHandles",
-    "start-redis": "start redis-server"
+    "start-redis": "start redis-server",
+    "build-client": "npm run clear && parcel build src/client/src/index.html --out-dir src/client/dist",
+    "dev-client": "npm run clear && parcel src/client/src/index.html --out-dir src/client/dist",
+    "clear": "rmdir /s /q .cache && rmdir /s /q src/client/dist"
   },
   "author": "",
   "license": "ISC",
@@ -32,6 +35,9 @@
     "elliptic": "^6.5.4",
     "express": "^4.18.2",
     "hex-to-binary": "^1.0.1",
+    "parcel-bundler": "^1.12.5",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "redis": "^4.6.11",
     "request": "^2.88.2",
     "uuid": "^9.0.1"
