@@ -183,16 +183,13 @@ describe("BlockChain()", () => {
 
       describe("and the transaction is a reward transaction", () => {
         it("returns false", () => {
+          rewardTransaction.outputMap[wallet.publicKey] = 999999;
+          newChain.addBlock({ data: [transaction, rewardTransaction] });
+
           expect(
             blockchain.validTransactionData({ chain: newChain.chain })
           ).toBe(false);
         });
-      });
-
-      it("returns false", () => {
-        expect(blockchain.validTransactionData({ chain: newChain.chain })).toBe(
-          false
-        );
       });
     });
 
@@ -224,6 +221,10 @@ describe("BlockChain()", () => {
 
     describe("and a block contains multiple identical transactions", () => {
       it("returns false", () => {
+        newChain.addBlock({
+          data: [transaction, transaction, transaction, rewardTransaction],
+        });
+
         expect(blockchain.validTransactionData({ chain: newChain.chain })).toBe(
           false
         );
