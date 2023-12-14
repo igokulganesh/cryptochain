@@ -3,6 +3,7 @@ import { cryptoHash } from "../utils/cryptoHash.js";
 import hexToBinary from "hex-to-binary";
 import Transaction from "../wallet/transaction.js";
 import { MINING_REWARD, REWARD_INPUT } from "../config.js";
+import Wallet from "../wallet/index.js";
 
 export default class BlockChain {
   constructor() {
@@ -94,6 +95,16 @@ export default class BlockChain {
         } else {
           if (!Transaction.validateTransaction(transaction)) {
             console.error("Invalid Transaction");
+            return false;
+          }
+
+          const trueBalance = Wallet.calculateBalance({
+            chain: this.chain,
+            address: transaction.input.address,
+          });
+
+          if (transaction.input.amount !== trueBalance) {
+            console.error("Invalid Input amount");
             return false;
           }
         }
