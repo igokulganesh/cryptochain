@@ -29,6 +29,11 @@ export default class BlockChain {
       return;
     }
 
+    if (!this.validTransactionData({ chain })) {
+      console.error("The incomming chain has invalid transaction data");
+      return;
+    }
+
     if (onSuccess) onSuccess();
 
     console.log("\nReplacing Chain with: \n", chain);

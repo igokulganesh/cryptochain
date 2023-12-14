@@ -98,7 +98,7 @@ describe("BlockChain()", () => {
   });
 
   describe("replaceChain()", () => {
-    let originalChain;
+    let originalChain, transaction, wallet;
 
     beforeEach(() => {
       originalChain = blockchain.chain;
@@ -114,10 +114,22 @@ describe("BlockChain()", () => {
 
     describe("when the new chain is longer", () => {
       beforeEach(() => {
-        newChain.addBlock({ data: "one" });
-        newChain.addBlock({ data: "two" });
-        newChain.addBlock({ data: "three" });
-        newChain.addBlock({ data: "four" });
+        wallet = new Wallet();
+        transaction = wallet.createTransaction({
+          recipient: "some",
+          amount: 50,
+        });
+        newChain.addBlock({ data: [transaction] });
+        transaction = wallet.createTransaction({
+          recipient: "some-2",
+          amount: 70,
+        });
+        newChain.addBlock({ data: [transaction] });
+        transaction = wallet.createTransaction({
+          recipient: "some-3",
+          amount: 10,
+        });
+        newChain.addBlock({ data: [transaction] });
       });
 
       describe("and when the chain is inValid", () => {
