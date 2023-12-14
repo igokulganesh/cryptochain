@@ -1,6 +1,8 @@
-import express, { response } from "express";
+import express from "express";
 import bodyParser from "body-parser";
 import request from "request";
+import path, { dirname } from "path";
+import { fileURLToPath } from "url";
 import Blockchain from "./blockchain/index.js";
 import PubSub from "./app/pubsub.js";
 import TransactionPool from "./wallet/transaction-pool.js";
@@ -24,8 +26,14 @@ const transactionMiner = new TransactionMiner({
   pubsub,
 });
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
 const app = express();
+
 app.use(bodyParser.json());
+
+app.use(express.static(path.join(__dirname, "client")));
 
 app.get("/api/blocks", (_req, res) => {
   console.log("GET: /api/block");
@@ -89,6 +97,10 @@ app.get("/api/wallet-info", (req, res) => {
     address,
     balance: Wallet.calculateBalance({ chain: blockchain.chain, address }),
   });
+});
+
+app.get("/", (req, res) => {
+  res.sendFile("index.html", { root: path.join(__dirname, "client") });
 });
 
 const syncWithRootState = () => {
