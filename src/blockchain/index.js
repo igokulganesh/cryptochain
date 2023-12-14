@@ -1,6 +1,8 @@
 import Block from "./block.js";
 import { cryptoHash } from "../utils/cryptoHash.js";
 import hexToBinary from "hex-to-binary";
+import Transaction from "../wallet/transaction.js";
+import { MINING_REWARD, REWARD_INPUT } from "../config.js";
 
 export default class BlockChain {
   constructor() {
@@ -66,6 +68,36 @@ export default class BlockChain {
 
       // Check each block has valid hash
       if (hash !== validatedHash) return false;
+    }
+
+    return true;
+  }
+
+  validTransactionData({ chain }) {
+    for (let i = 1; i < chain.length; i++) {
+      const block = chain[i];
+      let rewardTransactionCount = 0;
+
+      for (let transaction of block.data) {
+        // if transactions contains multiple rewards
+        if (transaction.input.address === REWARD_INPUT.address) {
+          rewardTransactionCount++;
+          if (rewardTransactionCount > 1) {
+            console.error("Miner rewards exceed limit");
+            return false;
+          }
+
+          if (Object.values(transaction.outputMap)[0] !== MINING_REWARD) {
+            console.error("Miner reward amount is invalid");
+            return false;
+          }
+        } else {
+          if (!Transaction.validateTransaction(transaction)) {
+            console.error("Invalid Transaction");
+            return false;
+          }
+        }
+      }
     }
 
     return true;
