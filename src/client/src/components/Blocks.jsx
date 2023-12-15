@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 
 function Block({ block }) {
   return (
-    <>
+    <div className="block">
       <p>Hash: {block.hash}</p>
-    </>
+    </div>
   );
 }
 

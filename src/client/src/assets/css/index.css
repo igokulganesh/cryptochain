@@ -1,0 +1,25 @@
+body {
+    background-color: #112149;
+    color: #fff;
+    text-align: center;
+    font-size: 15px;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Verdana, sans-serif;
+    word-wrap: break-word;
+}
+
+.App {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.walletInfo {
+    width: 500px;
+}
+
+.block {
+    border: 2px solid #fff;
+    padding: 2%;
+    margin: 1%;
+    width: 750px;
+}

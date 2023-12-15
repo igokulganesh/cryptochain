@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Blocks from "./Blocks";
+import logo from "../assets/images/blockchain.png";
 
 export default function App() {
   const [walletInfo, setWalletInfo] = useState({});
@@ -11,11 +12,14 @@ export default function App() {
   }, []);
 
   return (
-    <>
+    <div className="App">
+      <img src={logo} width="550px" style={{ margin: "5%" }} />
       <h1>Welcome to blockchain</h1>
-      <p>Address: {walletInfo.address}</p>
-      <p>balance: {walletInfo.balance}</p>
+      <div className="walletInfo">
+        <p>Address: {walletInfo.address}</p>
+        <p>balance: {walletInfo.balance}</p>
+      </div>
       <Blocks />
-    </>
+    </div>
   );
 }
