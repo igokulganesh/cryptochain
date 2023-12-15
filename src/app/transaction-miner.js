@@ -8,7 +8,7 @@ export default class TransactionMiner {
     this.pubsub = pubsub;
   }
 
-  mineTransaction() {
+  async mineTransaction() {
     // get the trasaction pool's Valid transactions
     const validTransactions = this.transactionPool.getValidTransactions();
 
@@ -21,7 +21,7 @@ export default class TransactionMiner {
     this.blockchain.addBlock({ data: validTransactions });
 
     // broadcast the updated blockchain
-    this.pubsub.broadcastChain();
+    await this.pubsub.broadcastChain();
 
     // clear the pool
     this.transactionPool.clear();
