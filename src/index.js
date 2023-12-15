@@ -128,6 +128,58 @@ const syncWithRootState = () => {
   );
 };
 
+const wallet1 = new Wallet();
+const wallet2 = new Wallet();
+
+const generateWalletTransaction = ({ wallet, recipient, amount }) => {
+  const transaction = wallet.createTransaction({
+    recipient,
+    amount,
+    chain: blockchain.chain,
+  });
+
+  transactionPool.setTransaction(transaction);
+};
+
+const walletTransaction1 = () =>
+  generateWalletTransaction({
+    wallet,
+    recipient: wallet1.publicKey,
+    amount: 50,
+  });
+
+const walletTransaction2 = () =>
+  generateWalletTransaction({
+    wallet: wallet1,
+    recipient: wallet2.publicKey,
+    amount: 10,
+  });
+
+const walletTransaction3 = () =>
+  generateWalletTransaction({
+    wallet: wallet2,
+    recipient: wallet.publicKey,
+    amount: 20,
+  });
+
+const test_func = async () => {
+  for (let i = 0; i < 10; i++) {
+    if (i % 3 === 0) {
+      walletTransaction1();
+      walletTransaction2();
+    } else if (i % 3 === 1) {
+      walletTransaction1();
+      walletTransaction3();
+    } else if (i % 3 === 2) {
+      walletTransaction2();
+      walletTransaction3();
+    }
+    await transactionMiner.mineTransaction();
+  }
+};
+
+test_func();
+
 let PEER_PORT;
 if (process.env.GENERATE_PEER_PORT === "true") {
   PEER_PORT = DEFUALT_PORT + Math.ceil(Math.random() * 1000);
