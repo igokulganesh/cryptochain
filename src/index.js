@@ -91,6 +91,7 @@ app.get("/api/mine-transactions", (req, res) => {
 });
 
 app.get("/api/wallet-info", (req, res) => {
+  console.log("GET: /api/wallet-info");
   const address = wallet.publicKey;
 
   res.json({
