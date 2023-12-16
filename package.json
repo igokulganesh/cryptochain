@@ -39,6 +39,7 @@
     "react": "^18.2.0",
     "react-bootstrap": "^2.9.1",
     "react-dom": "^18.2.0",
+    "react-router-dom": "^6.21.0",
     "redis": "^4.6.11",
     "request": "^2.88.2",
     "uuid": "^9.0.1"

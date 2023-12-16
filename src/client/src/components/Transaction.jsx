@@ -6,7 +6,7 @@ export default function Transaction({ transaction }) {
   const recipients = Object.keys(outputMap);
 
   return (
-    <>
+    <div className="p-5">
       <p>
         From: {useShortTextFormatter(input.address, 20)} | Balace:{" "}
         {input.amount}
@@ -19,6 +19,6 @@ export default function Transaction({ transaction }) {
           </p>
         );
       })}
-    </>
+    </div>
   );
 }

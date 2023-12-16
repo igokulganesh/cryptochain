@@ -7,7 +7,7 @@ body {
     word-wrap: break-word;
 }
 
-.App {
+.App, .Blocks {
     display: flex;
     flex-direction: column;
     align-items: center;

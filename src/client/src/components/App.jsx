@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
-import Blocks from "./Blocks";
 import logo from "../assets/images/blockchain.png";
+import { useNavigate } from "react-router-dom";
+import { Button } from "react-bootstrap";
 
 export default function App() {
+  const navigate = useNavigate();
   const [walletInfo, setWalletInfo] = useState({});
 
   useEffect(() => {
@@ -19,7 +21,7 @@ export default function App() {
         <p>Address: {walletInfo.address}</p>
         <p>balance: {walletInfo.balance}</p>
       </div>
-      <Blocks />
+      <Button onClick={() => navigate("/blocks")}>Blocks</Button>
     </div>
   );
 }
