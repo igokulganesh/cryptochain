@@ -37,6 +37,7 @@
     "hex-to-binary": "^1.0.1",
     "parcel-bundler": "^1.12.5",
     "react": "^18.2.0",
+    "react-bootstrap": "^2.9.1",
     "react-dom": "^18.2.0",
     "redis": "^4.6.11",
     "request": "^2.88.2",

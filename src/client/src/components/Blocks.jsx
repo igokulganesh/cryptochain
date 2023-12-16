@@ -1,12 +1,5 @@
 import React, { useEffect, useState } from "react";
-
-function Block({ block }) {
-  return (
-    <div className="block">
-      <p>Hash: {block.hash}</p>
-    </div>
-  );
-}
+import Block from "./Block";
 
 export default function Blocks() {
   const [blocks, setBlocks] = useState([]);
@@ -16,8 +9,6 @@ export default function Blocks() {
       .then((response) => response.json())
       .then((data) => setBlocks(data));
   }, []);
-
-  console.log(blocks);
 
   return (
     <>
