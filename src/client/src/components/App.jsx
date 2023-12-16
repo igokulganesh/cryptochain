@@ -22,6 +22,7 @@ export default function App() {
         <p>balance: {walletInfo.balance}</p>
       </div>
       <Button onClick={() => navigate("/blocks")}>Blocks</Button>
+      <Button onClick={() => navigate("/transact")}>Make Transaction</Button>
     </div>
   );
 }
