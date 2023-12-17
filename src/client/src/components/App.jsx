@@ -23,6 +23,9 @@ export default function App() {
       </div>
       <Button onClick={() => navigate("/blocks")}>Blocks</Button>
       <Button onClick={() => navigate("/transact")}>Make Transaction</Button>
+      <Button onClick={() => navigate("/transaction-pool")}>
+        Transaction Pool
+      </Button>
     </div>
   );
 }

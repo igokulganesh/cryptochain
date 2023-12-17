@@ -24,6 +24,6 @@ body {
     width: 750px;
 }
 
-.TransacationForm {
+.TransacationForm, .TransactionPool {
     margin: 10%;
 }

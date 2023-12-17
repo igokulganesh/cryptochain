@@ -9,17 +9,19 @@ export default function TransactionForm() {
   const [formData, setFormData] = useState(initial_data);
 
   const makeTransaction = () => {
-    if (formData.recipient === "" || formData.amount <= 0) {
+    const { recipient, amount } = formData;
+    if (recipient === "" || amount <= 0) {
       return;
     }
 
     fetch("http://localhost:3000/api/transact", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(formData),
+      body: JSON.stringify({ recipient, amount }),
     })
       .then((response) => response.json())
       .then((data) => console.log(data));
+    navigate("/transaction-pool");
   };
 
   return (

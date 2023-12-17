@@ -6,6 +6,7 @@ import "./assets/css/index.css";
 
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import TransactionForm from "./components/TransactionForm";
+import TransacationPool from "./components/TransactionPool";
 
 const router = createBrowserRouter([
   {
@@ -19,6 +20,10 @@ const router = createBrowserRouter([
   {
     path: "/transact",
     element: <TransactionForm />,
+  },
+  {
+    path: "/transaction-pool",
+    element: <TransacationPool />,
   },
 ]);
 

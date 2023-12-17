@@ -52,7 +52,8 @@ app.post("/api/mine", (req, res) => {
 app.post("/api/transact", (req, res) => {
   console.log("POST: /api/transact");
 
-  const { recipient, amount } = req.body;
+  let { recipient, amount } = req.body;
+  amount = Number(amount);
 
   let transaction = transactionPool.getExistingTransaction({
     address: wallet.publicKey,
