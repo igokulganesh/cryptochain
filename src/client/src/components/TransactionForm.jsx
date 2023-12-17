@@ -5,7 +5,22 @@ import { FormGroup, FormControl, Button } from "react-bootstrap";
 export default function TransactionForm() {
   const navigate = useNavigate();
 
-  const [formData, setFormData] = useState({ recipient: "", amount: 0 });
+  const initial_data = { recipient: "", amount: 0 };
+  const [formData, setFormData] = useState(initial_data);
+
+  const makeTransaction = () => {
+    if (formData.recipient === "" || formData.amount <= 0) {
+      return;
+    }
+
+    fetch("http://localhost:3000/api/transact", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(formData),
+    })
+      .then((response) => response.json())
+      .then((data) => console.log(data));
+  };
 
   return (
     <div className="TransacationForm">
@@ -29,6 +44,7 @@ export default function TransactionForm() {
         />
       </FormGroup>
       <Button onClick={() => navigate("/")}>Home</Button>
+      <Button onClick={makeTransaction}>Submit</Button>
     </div>
   );
 }
