@@ -7,8 +7,10 @@ export default function App() {
   const navigate = useNavigate();
   const [walletInfo, setWalletInfo] = useState({});
 
+  console.log(document.location.origin);
+
   useEffect(() => {
-    fetch("http://localhost:3000/api/wallet-info")
+    fetch(`${document.location.origin}/api/wallet-info`)
       .then((response) => response.json())
       .then((data) => setWalletInfo(data));
   }, []);

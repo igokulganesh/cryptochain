@@ -8,7 +8,7 @@ export default function Blocks() {
   const [blocks, setBlocks] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:3000/api/blocks")
+    fetch(`${document.location.origin}/api/blocks`)
       .then((response) => response.json())
       .then((data) => setBlocks(data));
   }, []);
