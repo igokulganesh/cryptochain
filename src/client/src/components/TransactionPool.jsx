@@ -9,6 +9,19 @@ export default function TransacationPool() {
   const navigate = useNavigate();
   const [transacationPoolMap, setTransactionMap] = useState({});
 
+  const fetchMineTransaction = () => {
+    fetch(`${document.location.origin}/api/mine-transactions`).then(
+      (response) => {
+        if (response.status === 200) {
+          console.log(response);
+          navigate("/blocks");
+        } else {
+          alert("The Mine Transactions block request fails");
+        }
+      }
+    );
+  };
+
   const fetchTransactionPoolMap = () => {
     console.log("get Transaction Pool");
     fetch(`${document.location.origin}/api/transaction-pool-map`)
@@ -42,6 +55,10 @@ export default function TransacationPool() {
           </div>
         );
       })}
+      <hr />
+      <Button onClick={fetchMineTransaction} variant="danger">
+        Mine the Transaction
+      </Button>
     </div>
   );
 }
