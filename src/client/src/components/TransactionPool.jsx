@@ -9,14 +9,18 @@ export default function TransacationPool() {
   const navigate = useNavigate();
   const [transacationPoolMap, setTransactionMap] = useState({});
 
-  useEffect(() => {
-    const fetchTransactionPoolMap = () => {
-      console.log("get Transaction Pool");
-      fetch(`${document.location.origin}/api/transaction-pool-map`)
-        .then((response) => response.json())
-        .then((data) => setTransactionMap(data));
-    };
+  const fetchTransactionPoolMap = () => {
+    console.log("get Transaction Pool");
+    fetch(`${document.location.origin}/api/transaction-pool-map`)
+      .then((response) => response.json())
+      .then((data) => setTransactionMap(data));
+  };
 
+  useEffect(() => {
+    fetchTransactionPoolMap();
+  }, []);
+
+  useEffect(() => {
     const intervalRef = setInterval(() => {
       fetchTransactionPoolMap();
     }, POLL_INTERVAL_MS);
