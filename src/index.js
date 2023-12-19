@@ -188,6 +188,6 @@ if (process.env.GENERATE_PEER_PORT === "true") {
 
 const PORT = PEER_PORT || DEFUALT_PORT;
 app.listen(PORT, () => {
-  console.log(`App Started\nListening at localhost:${PORT}`);
+  console.log(`App Started\nServer running at http://localhost:${PORT}`);
   if (PORT !== DEFUALT_PORT) syncWithRootState();
 });

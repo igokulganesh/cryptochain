@@ -20,8 +20,10 @@ export default function TransactionForm() {
       body: JSON.stringify({ recipient, amount }),
     })
       .then((response) => response.json())
-      .then((data) => console.log(data));
-    navigate("/transaction-pool");
+      .then((data) => {
+        console.log(data);
+        navigate("/transaction-pool");
+      });
   };
 
   return (
