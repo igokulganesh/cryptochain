@@ -101,6 +101,18 @@ app.get("/api/wallet-info", (req, res) => {
   });
 });
 
+app.get("/api/known-addresses", (req, res) => {
+  const addressMap = new Set();
+
+  for (let block of blockchain.chain) {
+    for (let transaction of block.data) {
+      const recipient = Object.keys(transaction.outputMap);
+      recipient.forEach((recipient) => addressMap.add(recipient));
+    }
+  }
+  res.json([...addressMap]);
+});
+
 app.get("/*", (req, res) => {
   res.sendFile("index.html", { root: path.join(__dirname, "client", "dist") });
 });
